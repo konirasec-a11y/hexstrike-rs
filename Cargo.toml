@@ -1,0 +1,46 @@
+# ============================================================================
+# HexStrike-RS — workspace do port Rust (ordem: ranking de acoplamento)
+# Camada 0: hexstrike-core   (config, logging, estado, visual_engine)
+# Camada 2: hexstrike-engine (cache, telemetry, execute_command)
+# Folhas:   hexstrike-server (axum + rotas; /health primeiro)
+# Versões fixadas conforme verificação crates.io de 2026-11-26 (docs/).
+# ============================================================================
+[workspace]
+resolver = "2"
+members = [
+    "crates/hexstrike-core",
+    "crates/hexstrike-intelligence",
+    "crates/hexstrike-routes",
+    "crates/hexstrike-server",
+]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2024"
+
+[workspace.dependencies]
+hexstrike-core = { path = "crates/hexstrike-core" }
+hexstrike-intelligence = { path = "crates/hexstrike-intelligence" }
+hexstrike-routes = { path = "crates/hexstrike-routes" }
+
+tokio = { version = "1.54", features = ["rt-multi-thread", "macros", "process", "io-util", "time", "sync", "net", "signal"] }
+axum = "0.8"
+clap = { version = "4.6", features = ["derive", "env"] }
+serde = { version = "1.0", features = ["derive"] }
+# SEM preserve_order, de propósito: medido no harness (docker/parity), o
+# jsonify() do Flask 3 ordena as chaves alfabeticamente em TODOS os níveis,
+# porque JSON_SORT_KEYS foi removido no Flask 3 e `app.json.sort_keys` vem True.
+# O Map default do serde_json é BTreeMap = ordem alfabética recursiva = 1:1.
+serde_json = "1.0"
+anyhow = "1.0"
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter", "fmt", "ansi", "registry", "std"] }
+md-5 = "0.10"
+# `re` do Python nas rotas (parse de saída de ferramenta)
+regex = "1"
+linked-hash-map = "0.2"
+sysinfo = "0.40"
+time = { version = "0.3", features = ["formatting", "macros", "local-offset"] }
+
+[profile.release]
+lto = "thin"

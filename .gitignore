@@ -1,0 +1,9 @@
+/target
+**/*.rs.bk
+hexstrike.log
+/work
+work/
+__pycache__/
+*.pyc
+Cargo.lock
+migration/work/

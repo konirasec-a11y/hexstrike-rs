@@ -1,0 +1,15 @@
+[package]
+name = "hexstrike-routes"
+version.workspace = true
+edition.workspace = true
+description = "Camada 9: os 20 modulos de routes/ e a montagem do app"
+
+[dependencies]
+hexstrike-core = { workspace = true }
+hexstrike-intelligence = { workspace = true }
+axum = { workspace = true }
+tokio = { workspace = true }
+serde_json = { workspace = true }
+tracing = { workspace = true }
+time = { workspace = true }
+regex = { workspace = true }

@@ -1,0 +1,23 @@
+[package]
+name = "hexstrike-server"
+version.workspace = true
+edition.workspace = true
+description = "Binario: main.py (CLI, banner, startup) sobre o app de hexstrike-routes"
+
+[[bin]]
+name = "hexstrike-server"
+path = "src/main.rs"
+
+[dependencies]
+hexstrike-core = { workspace = true }
+hexstrike-intelligence = { workspace = true }
+hexstrike-routes = { workspace = true }
+tokio = { workspace = true }
+axum = { workspace = true }
+clap = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+anyhow = { workspace = true }
+tracing = { workspace = true }
+tracing-subscriber = { workspace = true }
+time = { workspace = true }

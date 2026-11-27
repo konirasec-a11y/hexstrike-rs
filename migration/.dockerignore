@@ -1,0 +1,6 @@
+# O contexto só precisa do Dockerfile; o código entra por volume.
+target/
+work/
+.git/
+docs/
+**/*.rs.bk

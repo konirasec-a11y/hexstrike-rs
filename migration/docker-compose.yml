@@ -1,0 +1,25 @@
+# Harness de paridade 1:1: sobe o Python original e o port Rust no mesmo
+# container, dispara as rotas nos dois e diffa o JSON.
+#
+# SEM `name:` fixo, de propósito: com um projeto compose compartilhado os
+# worktrees dos shards disputavam o mesmo lock e as validações enfileiravam
+# (medido: 24 min pendurado). Cada worktree tem o seu projeto.
+services:
+  parity:
+    build:
+      context: .
+      dockerfile: docker/parity/Dockerfile
+    working_dir: /work
+    environment:
+      PYTHONPATH: /hs
+      # Um target compartilhado, fora do worktree: as ~120 dependências são
+      # compiladas uma vez e reaproveitadas por todos os worktrees.
+      CARGO_TARGET_DIR: /cargo-target
+      CARGO_HOME: /work/cargo
+    volumes:
+      - ${HEXSTRIKE_PY:-./hexstrike-ai}:/hs:ro
+      - ..:/rs
+      - ${HOME}/.cargo:/work/cargo
+      - ${HOME}/.cache/hexstrike-rs-parity/target:/cargo-target
+      - ./work:/work
+    entrypoint: ["/bin/sh", "/rs/migration/docker/parity/run.sh"]
